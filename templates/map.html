@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://dreammeaningexplorer.com/wp-content/uploads/2023/12/landlord-dream-meaning.webp') no-repeat center center fixed;
+            background-size: cover;
+            color: #F7F6F7;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: rgba(14, 14, 52, 0.8); /* Transparent dark background */
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+            width: 90%;
+            max-width: 1000px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #5A7FC8;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        #map {
+            height: 600px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            filter: brightness(0.7) contrast(1.2) hue-rotate(-15deg); /* Approximate dark blue overlay */
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 24px 24px;
+            background-color: #9A4D87;
+            color: #F7F6F7;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        a:hover {
+            background-color: #5A7FC8;
+            color: #F7F6F7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Location Map</h1>
+        <div id="map"></div>
+        <br>
+        <a href="{{ url_for('index') }}">Back to Home</a>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        const map = L.map('map').setView([13.0827, 80.2707], 12); // Centered on Chennai
+
+        // Add a tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Sample data for places
+        const places = [
+            { name: 'Porur', lat: 13.0288, lng: 80.2267, details: 'Porur is a locality in Chennai, known for its commercial and residential areas.', type: 'residential' },
+            { name: 'Anna Nagar', lat: 13.0936, lng: 80.2327, details: 'Anna Nagar is a prominent residential area in Chennai, with many parks and schools.', type: 'residential' },
+            { name: 'Chennai General Hospital', lat: 13.0827, lng: 80.2707, details: 'Major hospital in Chennai.', type: 'hospital' },
+            { name: 'Chennai Railway Station', lat: 13.0878, lng: 80.2785, details: 'Important railway station in Chennai.', type: 'railway' }
+        ];
+
+        // Define custom icons
+        const iconUrls = {
+            hospital: 'https://img.icons8.com/color/48/000000/hospital-room.png', // Red circle icon
+            railway: 'https://img.icons8.com/color/48/000000/train.png', // Pink circle icon
+            residential: 'https://img.icons8.com/fluency/48/000000/home.png' // Default icon
+        };
+
+        // Add markers with popups
+        places.forEach(place => {
+            L.marker([place.lat, place.lng], {
+                icon: L.icon({
+                    iconUrl: iconUrls[place.type] || iconUrls.residential,
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32],
+                    popupAnchor: [0, -32]
+                })
+            })
+            .addTo(map)
+            .bindPopup(`<strong>${place.name}</strong><br>${place.details}`)
+            .openPopup();
+        });
+    </script>
+</body>
+</html>
