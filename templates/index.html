@@ -1,1 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chennai Property Price Prediction</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://hdwallpaperim.com/wp-content/uploads/2017/08/31/149627-HDR-building-cityscape.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #f0f4f8;
+            text-align: center;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 2.5em;
+            margin-top: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h1 .fa-chart-line {
+            font-size: 1.2em;
+            color: #FFA500;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #f0f4f8;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 16px;
+            border: 2px solid #FFA500;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.7);
+            color: #333;
+        }
+
+        input[type="submit"] {
+            background-color: #FFA500;
+            color: #ffffff;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #e67e22;
+        }
+
+        select {
+            background-color: rgba(236, 240, 241, 0.7);
+        }
+
+        a {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 10px 20px;
+            background-color: transparent;
+            color: #FFA500;
+            text-decoration: none;
+            border: 2px solid #FFA500;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+            font-size: 16px;
+        }
+
+        a:hover {
+            background-color: #FF8C00;
+            color: white;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.4);
+            color: white;
+            padding: 10px 20px;
+            width: 100%;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            border-top: 2px solid #FFA500;
+            position: relative;
+            bottom: 0;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        footer a:hover {
+            text-decoration: none;
+        }
+
+        footer .fa {
+            margin-right: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>
+            <i class="fas fa-chart-line"></i>
+            Chennai Property Price Prediction
+        </h1>
+        <form action="{{ url_for('predict') }}" method="post">
+            <label for="location">Location:</label>
+            <select id="location" name="location">
+                <option value="Choose your location">Choose your location</option>
+                <option value="Porur">Porur</option>
+                <option value="Anna Nagar">Anna Nagar</option>
+                <option value="T. Nagar">T. Nagar</option>
+                <option value="Adyar">Adyar</option>
+                <option value="Velachery">Velachery</option>
+                <option value="Guindy">Guindy</option>
+                <option value="Mylapore">Mylapore</option>
+                <option value="Kodambakkam">Kodambakkam</option>
+                <option value="Nungambakkam">Nungambakkam</option>
+                <option value="Tambaram">Tambaram</option>
+            </select><br>
+
+            <label for="street">Street:</label>
+            <input type="text" id="street" name="street" required><br>
+
+            <label for="area">Area (sq ft):</label>
+            <input type="number" id="area" name="area" min="100" required><br>
+
+            <label for="year_built">Year Built:</label>
+            <input type="number" id="year_built" name="year_built" min="1900" max="2023" required><br>
+
+            <label for="property_type">Property Type:</label>
+            <select id="property_type" name="property_type">
+                <option value="Choose your property type">Choose property type</option>
+                <option value="Single Family">Single Family</option>
+                <option value="Condo">Condo</option>
+                <option value="Townhouse">Townhouse</option>
+                <option value="Multi Family">Multi Family</option>
+                <option value="Plot">Plot</option>
+            </select><br>
+
+            <label for="nearby_locations">Nearby Famous Locations:</label>
+            <input type="text" id="nearby_locations" name="nearby_locations"><br>
+
+            <label for="crime_rate">Crime Rate:</label>
+            <input type="number" id="crime_rate" name="crime_rate" min="0" max="100" step="0.1" required><br>
+
+            <label for="water_facility">Water Facility:</label>
+            <select id="water_facility" name="water_facility">
+                <option value="Choose water facility">Choose water facility</option>
+                <option value="Available">Available</option>
+                <option value="Not Available">Not Available</option>
+            </select><br>
+
+            <label for="public_transport">Public Transport Accessibility:</label>
+            <select id="public_transport" name="public_transport">
+                <option value="Choose transport facility">Choose transport facility</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+            </select><br>
+
+            <input type="submit" value="Predict Price">
+        </form>
+    </div>
+
+    <footer>
+        <a href="tel:9000976060"><i class="fa fa-phone"></i> 9000976060</a>
+        <a href="mailto:kavyasri.nlr2003@gmail.com"><i class="fa fa-envelope"></i> kavyasri.nlr2003@gmail.com</a>
+        <a href="https://www.linkedin.com/in/kavya-sri-nellore-ba1b83260/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        <a href="https://github.com/kavya-sri2003" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+    </footer>
+</body>
+</html>
 
